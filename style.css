@@ -1,0 +1,11 @@
+#asteroids {
+    height: 80vh;
+    margin: 7vh 5vw;
+    border: 5px solid wheat;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
