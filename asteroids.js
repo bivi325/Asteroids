@@ -1,9 +1,11 @@
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('serviceWorker.js').then(function () {
-    return navigator.serviceWorker.ready;
-  }).then(function () {
-  }).catch(function () {
-  });
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("serviceWorker.js")
+    .then(function() {
+      return navigator.serviceWorker.ready;
+    })
+    .then(function() {})
+    .catch(function() {});
 }
 
 // adding the game to the page
@@ -27,26 +29,26 @@ const game = {
 };
 
 function smallAsteroid() {
-  this.name = 'small';
-  this.numberOfSides = 6,
-  this.size = canvas.width / 80,
-  this.posX = Math.floor(Math.random() * Math.floor(canvas.width / 3)),
-  this.posY = Math.floor(Math.random() * Math.floor(canvas.height) / 3),
-  this.angle = Math.floor(Math.random() * Math.floor(degToRad(360))),
-  this.speed = 1;
+  this.name = "small";
+  (this.numberOfSides = 6),
+    (this.size = canvas.width / 80),
+    (this.posX = Math.floor(Math.random() * Math.floor(canvas.width / 3))),
+    (this.posY = Math.floor((Math.random() * Math.floor(canvas.height)) / 3)),
+    (this.angle = Math.floor(Math.random() * Math.floor(degToRad(360)))),
+    (this.speed = 1);
   this.price = 100;
 }
 
 function mediumAsteroid() {
-  this.name = 'medium';
-  this.numberOfSides = 8,
-  this.size = canvas.width / 40,
-  this.posX = Math.floor(Math.random() * Math.floor(canvas.width / 3)),
-  this.posY = Math.floor(Math.random() * Math.floor(canvas.height / 3)),
-  this.angle = Math.floor(Math.random() * Math.floor(degToRad(360))),
-  this.speed = 0.5;
+  this.name = "medium";
+  (this.numberOfSides = 8),
+    (this.size = canvas.width / 40),
+    (this.posX = Math.floor(Math.random() * Math.floor(canvas.width / 3))),
+    (this.posY = Math.floor(Math.random() * Math.floor(canvas.height / 3))),
+    (this.angle = Math.floor(Math.random() * Math.floor(degToRad(360)))),
+    (this.speed = 0.5);
   this.price = 400;
-};
+}
 
 const spaceship = {
   color: "white",
@@ -211,6 +213,8 @@ function startNewGame() {
   document.addEventListener("keyup", keyUpHandler);
   document.addEventListener("keydown", keyDownHandler);
   document.addEventListener("click", clickHandler);
+  spaceship.lives = 3;
+  score = 0;
   gameLoop();
 }
 
@@ -253,12 +257,12 @@ function update() {
     spaceship.angle += degToRad(5);
   }
   if (asteroids.length < game.limit) {
-    whatWillItBe = Math.floor(Math.random() * game.numberOfAsteroidClasses * 4)
-    if(whatWillItBe > 4) {
-      asteroid = new mediumAsteroid()
-    }else{
+    whatWillItBe = Math.floor(Math.random() * game.numberOfAsteroidClasses * 4);
+    if (whatWillItBe > 4) {
+      asteroid = new mediumAsteroid();
+    } else {
       asteroid = new smallAsteroid();
-    }    
+    }
     asteroids.push(asteroid);
   }
 
@@ -308,19 +312,27 @@ function checkCollision() {
       if (distance < asteroids[i].size + spaceship.bulletSize) {
         bullets.splice(i, 1);
         score += asteroids[i].price;
-        if(asteroids[i].name == 'medium'){
-          asteroid_1 = new smallAsteroid()
-          asteroid_1.posX = asteroids[i].posX + asteroids[i].size * Math.cos(asteroids[i].angle);
-          asteroid_1.posY = asteroids[i].posY + asteroids[i].size * Math.sin(asteroids[i].angle);
+        if (asteroids[i].name == "medium") {
+          asteroid_1 = new smallAsteroid();
+          asteroid_1.posX =
+            asteroids[i].posX +
+            asteroids[i].size * Math.cos(asteroids[i].angle);
+          asteroid_1.posY =
+            asteroids[i].posY +
+            asteroids[i].size * Math.sin(asteroids[i].angle);
           asteroid_1.angle = asteroids[i].angle;
-          asteroid_2 = new smallAsteroid()
-          asteroid_2.posX = asteroids[i].posX + asteroids[i].size * Math.cos(asteroids[i].angle);
-          asteroid_2.posY = asteroids[i].posY + asteroids[i].size * Math.sin(asteroids[i].angle);
+          asteroid_2 = new smallAsteroid();
+          asteroid_2.posX =
+            asteroids[i].posX +
+            asteroids[i].size * Math.cos(asteroids[i].angle);
+          asteroid_2.posY =
+            asteroids[i].posY +
+            asteroids[i].size * Math.sin(asteroids[i].angle);
           asteroid_2.angle = -asteroids[i].angle;
-          asteroids.push(asteroid_1)
-          asteroids.push(asteroid_2)
+          asteroids.push(asteroid_1);
+          asteroids.push(asteroid_2);
         }
-        asteroids.splice(i, 1);        
+        asteroids.splice(i, 1);
         return;
       }
     }
@@ -345,7 +357,26 @@ function checkBounds(obj) {
 function gameEnd() {
   cancelAnimationFrame(requestID);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawText("The End!", signPosX, signPosY, fontSize);
+  canvas.style.cursor = "auto";
+  drawText(
+    `Your score is ${score}`,
+    signPosX - canvas.width / 6,
+    signPosY - fontSize,
+    fontSize
+  );
+  drawText("Try Again", signPosX, signPosY, fontSize);
+  document.addEventListener("click", e => {
+    const relativeX = e.clientX - canvas.offsetLeft;
+    const relativeY = e.clientY - canvas.offsetTop;
+    if (
+      relativeX > signPosX &&
+      relativeX < (canvas.width + (fontSize * newGame.length) / 2) / 2
+    ) {
+      if (relativeY > (canvas.height - fontSize) / 2 && relativeY < signPosY) {
+        location.reload();
+      }
+    }
+  });
 }
 
 loadGame();
