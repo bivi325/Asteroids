@@ -1,3 +1,11 @@
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('serviceWorker.js').then(function () {
+    return navigator.serviceWorker.ready;
+  }).then(function () {
+  }).catch(function () {
+  });
+}
+
 // adding the game to the page
 gameDiv = document.getElementById("asteroids");
 canvas = document.createElement("canvas");
@@ -22,8 +30,8 @@ function smallAsteroid() {
   this.name = 'small';
   this.numberOfSides = 6,
   this.size = canvas.width / 80,
-  this.posX = Math.floor(Math.random() * Math.floor(canvas.width)),
-  this.posY = Math.floor(Math.random() * Math.floor(canvas.height)),
+  this.posX = Math.floor(Math.random() * Math.floor(canvas.width / 3)),
+  this.posY = Math.floor(Math.random() * Math.floor(canvas.height) / 3),
   this.angle = Math.floor(Math.random() * Math.floor(degToRad(360))),
   this.speed = 1;
   this.price = 100;
@@ -33,8 +41,8 @@ function mediumAsteroid() {
   this.name = 'medium';
   this.numberOfSides = 8,
   this.size = canvas.width / 40,
-  this.posX = Math.floor(Math.random() * Math.floor(canvas.width)),
-  this.posY = Math.floor(Math.random() * Math.floor(canvas.height)),
+  this.posX = Math.floor(Math.random() * Math.floor(canvas.width / 3)),
+  this.posY = Math.floor(Math.random() * Math.floor(canvas.height / 3)),
   this.angle = Math.floor(Math.random() * Math.floor(degToRad(360))),
   this.speed = 0.5;
   this.price = 400;
